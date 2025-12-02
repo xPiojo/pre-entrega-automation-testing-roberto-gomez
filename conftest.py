@@ -1,30 +1,41 @@
+"""
+conftest.py
+----------------------------
+Se ejecuta antes de cada test y configura el driver de Selenium.
+También toma capturas automáticas cuando un test falla.
+"""
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
+import datetime
+
 
 @pytest.fixture
 def driver():
-    # Setup: se ejecuta antes del test
-    chrome_opt = Options()
-    chrome_opt.add_argument("--incognito")
-    # Si querés que no abra la ventana del navegador, descomentá la siguiente línea:
-    # chrome_opt.add_argument("--headless=new")
+    """
+    Crea el navegador Chrome en modo incógnito.
+    Se ejecuta antes del test y se cierra al terminar.
+    """
+    options = Options()
+    options.add_argument("--incognito")
+    # Para modo sin ventana (si lo querés), descomentá la siguiente línea:
+    # options.add_argument("--headless=new")
 
-    driver = webdriver.Chrome(options=chrome_opt)
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
 
-    yield driver  # 🔹 Entrega el driver al test
+    yield driver  # --> entrega el driver al test
 
-    # Teardown: se ejecuta después del test
-    driver.quit()
+    driver.quit()  # --> se ejecuta después del test
 
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """
-    Hook de pytest: se ejecuta después de cada test.
-    Si el test falla, toma una captura de pantalla y la guarda en /reports.
+    Si un test falla, guarda una captura en /reports.
+    Muy útil para debugging.
     """
     outcome = yield
     report = outcome.get_result()
@@ -33,6 +44,10 @@ def pytest_runtest_makereport(item, call):
         driver = item.funcargs.get("driver")
         if driver:
             os.makedirs("reports", exist_ok=True)
-            screenshot_path = f"reports/{item.name}.png"
+
+            # Timestamp para que no se repitan nombres
+            timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+            screenshot_path = f"reports/{item.name}_{timestamp}.png"
+
             driver.save_screenshot(screenshot_path)
             print(f"\n📸 Captura guardada en: {screenshot_path}")
