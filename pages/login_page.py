@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from utils.logger import logger
 
 
@@ -37,11 +38,18 @@ class LoginPage:
         login_button.click()
         logger.info("Click en botón de login")
 
-    def get_error_message(self):
-        logger.info("Buscando mensaje de error...")
-        error_element = self.wait.until(
-            EC.visibility_of_element_located(self._ERROR_MSG)
-        )
-        msg = error_element.text
-        logger.info(f"Mensaje de error encontrado: '{msg}'")
-        return msg
+    def has_error(self, timeout=3):
+        """
+        Retorna True si aparece mensaje de error dentro del timeout,
+        False si no aparece.
+        """
+        logger.info("Verificando si hay mensaje de error...")
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(self._ERROR_MSG)
+            )
+            logger.info("Mensaje de error detectado.")
+            return True
+        except TimeoutException:
+            logger.info("No se detectó mensaje de error.")
+            return False
