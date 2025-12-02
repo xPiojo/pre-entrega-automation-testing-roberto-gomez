@@ -1,0 +1,9 @@
+username,password,debe_funcionar
+standard_user,secret_sauce,True
+standard_user,secret_sauce,True
+locked_out_user,secret_sauce,False
+problem_user,secret_sauce,True
+performance_glitch_user,secret_sauce,True
+error_user,secret_sauce,True
+visual_user,secret_sauce,True
+admin,12345,False
