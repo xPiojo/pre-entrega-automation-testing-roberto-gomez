@@ -1,31 +1,31 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import pytest
+from pages.login_page import LoginPage
+from utils.data_login_loader import load_login_data
 
-def test_login(driver):
+@pytest.mark.parametrize("username,password,debe_funcionar", load_login_data("data/data_login.csv"))
+def test_login(driver, username, password, debe_funcionar):
     """
-    Test automatizado de login en SauceDemo.
-    Valida URL, título "Products" y logo "Swag Labs".
+    Test parametrizado de login en SauceDemo.
+
+    Este test utiliza datos desde un CSV (data_login.csv).
+    Para cada caso:
+    - Si 'debe_funcionar' es True, el login NO debe mostrar error.
+    - Si 'debe_funcionar' es False, el login debe mostrar mensaje de error.
+
+    La interacción está encapsulada en el Page Object LoginPage.
+    El fixture 'driver' es provisto por conftest.py.
     """
 
-    # 1️ Navegar a la página de login
-    driver.get("https://www.saucedemo.com/")
+    login_page = LoginPage(driver)
 
-    wait = WebDriverWait(driver, 10)  # Espera explícita hasta 10 segundos
+    # 1. Abrir la página
+    login_page.open()
 
-    # 2️ Ingresar credenciales válidas
-    wait.until(EC.visibility_of_element_located((By.ID, "user-name"))).send_keys("standard_user")
-    wait.until(EC.visibility_of_element_located((By.ID, "password"))).send_keys("secret_sauce")
-    wait.until(EC.element_to_be_clickable((By.ID, "login-button"))).click()
+    # 2. Intentar login
+    login_page.login(username, password)
 
-    # 3️ Validar login exitoso mediante URL
-    wait.until(EC.url_contains("/inventory.html"))
-    assert driver.current_url.endswith("/inventory.html"), "❌ El login falló o no redirigió correctamente."
-
-    # 4️ Validar presencia del título "Products"
-    wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, "title"), "Products"))
-
-    # 5️ Validar presencia del logo "Swag Labs"
-    wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, "app_logo"), "Swag Labs"))
-
-    print("✅ Login exitoso y validaciones correctas.")
+    # 3. Validación
+    if debe_funcionar:
+        assert not login_page.has_error(), "El login DEBERÍA funcionar, pero mostró error."
+    else:
+        assert login_page.has_error(), "El login DEBERÍA fallar, pero NO mostró error."
