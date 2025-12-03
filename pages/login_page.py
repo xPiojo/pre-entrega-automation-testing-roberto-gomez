@@ -6,6 +6,11 @@ from utils.logger import logger
 
 
 class LoginPage:
+    """
+    Page Object para la página de login de SauceDemo.
+    Encapsula la interacción con los elementos y la navegación.
+    """
+
     URL = "https://www.saucedemo.com/"
 
     _USER_INPUT = (By.ID, "user-name")
@@ -14,15 +19,31 @@ class LoginPage:
     _ERROR_MSG = (By.CSS_SELECTOR, "h3[data-test='error']")
 
     def __init__(self, driver):
+        """
+        Inicializa el Page Object con el driver de Selenium.
+        
+        Args:
+            driver: instancia de WebDriver para controlar el navegador.
+        """
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
         logger.info("LoginPage inicializada")
 
     def open(self):
+        """
+        Abre la URL de la página de login.
+        """
         logger.info(f"Abrir URL: {self.URL}")
         self.driver.get(self.URL)
 
     def login(self, username, password):
+        """
+        Completa los campos de usuario y contraseña y hace click en login.
+        
+        Args:
+            username (str): Nombre de usuario a ingresar.
+            password (str): Contraseña a ingresar.
+        """
         logger.info(f"Intentando login con username='{username}'")
         
         user_input = self.wait.until(EC.visibility_of_element_located(self._USER_INPUT))
@@ -40,8 +61,13 @@ class LoginPage:
 
     def has_error(self, timeout=3):
         """
-        Retorna True si aparece mensaje de error dentro del timeout,
-        False si no aparece.
+        Verifica si aparece un mensaje de error en la página dentro del timeout dado.
+
+        Args:
+            timeout (int): Tiempo máximo en segundos para esperar el mensaje.
+
+        Returns:
+            bool: True si aparece mensaje de error, False si no.
         """
         logger.info("Verificando si hay mensaje de error...")
         try:
