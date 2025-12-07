@@ -1,43 +1,44 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import pytest
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from utils.logger import logger  # <--- 1. Importar el logger
 
-def test_inventory_page(driver):
+@pytest.mark.parametrize("username,password", [
+    ("standard_user", "secret_sauce")
+])
+def test_agregar_item_al_inventario(driver, username, password):
     """
-    Test de navegación y verificación del catálogo en SauceDemo:
-    - Verifica título de la página de inventario
-    - Comprueba que haya productos visibles
-    - Valida elementos de la interfaz (menú, filtros)
-    - Lista nombre y precio del primer producto
+    Test que valida agregar un item al carrito desde la página de inventario.
     """
+    
+    logger.info("--- INICIO TEST: Agregar Item al Inventario ---") # <--- Log de inicio
 
-    driver.get("https://www.saucedemo.com/")
+    # 1. PRECONDICIÓN
+    logger.info("STEP 1: Realizando Login...")
+    login = LoginPage(driver)
+    login.open()
+    login.login(username, password)
 
-    wait = WebDriverWait(driver, 10)
+    # 2. INICIO DEL TEST DE INVENTARIO
+    inventory = InventoryPage(driver)
 
-    # 1️ Login previo
-    wait.until(EC.visibility_of_element_located((By.ID, "user-name"))).send_keys("standard_user")
-    wait.until(EC.visibility_of_element_located((By.ID, "password"))).send_keys("secret_sauce")
-    wait.until(EC.element_to_be_clickable((By.ID, "login-button"))).click()
+    # Validar que hay productos visibles
+    logger.info("STEP 2: Verificando carga del catálogo...")
+    productos = inventory.obtain_all_products()
+    assert len(productos) > 0, "Error: No se cargaron los productos"
 
-    wait.until(EC.url_contains("/inventory.html"))
+    # Validar que el carrito empieza vacío
+    logger.info("STEP 3: Verificando que el carrito esté vacío al inicio...")
+    cantidad_inicial = inventory.get_cart_item_count()
+    assert cantidad_inicial == 0, "Error: El carrito debería estar vacío al inicio"
 
-    # 2️ Validar título de la página
-    assert driver.title == "Swag Labs", "❌ El título de la página no coincide."
+    # Acción: Agregar el primer producto
+    logger.info("STEP 4: Agregando el primer producto al carrito...")
+    inventory.add_first_product_to_cart()
 
-    # 3️ Comprobar que hay productos visibles
-    productos = driver.find_elements(By.CLASS_NAME, "inventory_item")
-    assert len(productos) > 0, "❌ No hay productos visibles en la página."
+    # Validar que el contador subió a 1
+    logger.info("STEP 5: Verificando que el contador del carrito aumentó...")
+    cantidad_final = inventory.get_cart_item_count()
+    assert cantidad_final == 1, f"Error: Esperaba 1 item, pero hay {cantidad_final}"
 
-    # 4️ Validar elementos importantes de la interfaz
-    menu_icon = wait.until(EC.presence_of_element_located((By.ID, "react-burger-menu-btn")))
-    filtro_dropdown = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product_sort_container")))
-
-    assert menu_icon.is_displayed(), "❌ El menú no está visible."
-    assert filtro_dropdown.is_displayed(), "❌ El filtro de productos no está visible."
-
-    # 5️ Listar nombre y precio del primer producto
-    primer_producto = productos[0]
-    nombre = primer_producto.find_element(By.CLASS_NAME, "inventory_item_name").text
-    precio = primer_producto.find_element(By.CLASS_NAME, "inventory_item_price").text
-    print(f"✅ Primer producto: {nombre} - Precio: {precio}")
+    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---") # <--- Log de cierre
