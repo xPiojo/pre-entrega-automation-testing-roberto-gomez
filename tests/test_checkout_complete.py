@@ -10,7 +10,10 @@ def test_end_to_end_purchase(driver, username, password):
     """
     TEST E2E: Login -> Agregar -> Carrito -> Checkout -> Datos -> Finish -> Validar -> Back Home
     """
-    logger.info("--- INICIO TEST E2E: Compra Completa ---")
+    # Log de inicio
+    logger.info("\n" + "="*60)
+    logger.info("🚀 INICIO TEST E2E: Compra Completa")
+    logger.info("="*60)
 
     # 1. Login
     logger.info("STEP 1: Login...")
@@ -53,4 +56,4 @@ def test_end_to_end_purchase(driver, username, password):
     assert "inventory.html" in driver.current_url, "Error: El botón Back Home no llevó al inventario."
     logger.info("✅ Ciclo completo cerrado: Estamos de vuelta en el inventario.")
 
-    logger.info("--- TEST E2E FINALIZADO CON ÉXITO ---")
+    logger.info("--- TEST E2E FINALIZADO CON ÉXITO ---\n")

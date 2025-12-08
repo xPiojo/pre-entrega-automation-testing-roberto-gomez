@@ -9,7 +9,10 @@ def test_checkout_flow(driver, username, password):
     """
     TEST A: Agregar item -> Verificar en Carrito -> Ir a Checkout
     """
-    logger.info("--- INICIO TEST: Flujo de Checkout (End-to-End) ---")
+    # LOG DE INICIO
+    logger.info("\n" + "="*60)
+    logger.info("🚀 INICIO TEST: Flujo de Checkout (End-to-End)")
+    logger.info("="*60)
     
     # 1. Login
     logger.info("STEP 1: Iniciando sesión...")
@@ -42,7 +45,8 @@ def test_checkout_flow(driver, username, password):
     # Verificación final: ¿Cambiamos de URL?
     assert "checkout-step-one.html" in driver.current_url, "Error: No se redirigió a la página de checkout."
     logger.info("✅ Redirección a Checkout correcta.")
-    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---")
+    
+    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---\n")
 
 
 @pytest.mark.parametrize("username,password", [("standard_user", "secret_sauce")])
@@ -50,7 +54,10 @@ def test_remove_item_from_cart(driver, username, password):
     """
     TEST B: Agregar item -> Ir a Carrito -> Remover item -> Verificar vacío
     """
-    logger.info("--- INICIO TEST: Remover Item del Carrito ---")
+    # LOG DE INICIO
+    logger.info("\n" + "="*60)
+    logger.info("🚀 INICIO TEST: Remover Item del Carrito")
+    logger.info("="*60)
     
     # 1. Login y Agregar
     logger.info("STEP 1: Preparando entorno (Login + Agregar producto)...")
@@ -73,4 +80,5 @@ def test_remove_item_from_cart(driver, username, password):
     
     assert esta_vacio, "Error: El carrito debería estar vacío después de remover el item."
     logger.info("✅ Validación exitosa: El carrito está vacío.")
-    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---")
+    
+    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---\n")

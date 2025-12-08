@@ -2,7 +2,7 @@ import pytest
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from utils.lector_json import leer_datos_productos
-from utils.logger import logger  # <--- Import del logger
+from utils.logger import logger
 
 # Cargamos el JSON una sola vez al principio
 DATOS_ESPERADOS = leer_datos_productos("data/productos.json")
@@ -14,7 +14,10 @@ def test_validar_precios_inventario(driver, username, password):
     con la base de datos oficial (JSON).
     """
 
-    logger.info("--- INICIO TEST: Validación de Datos del Catálogo (JSON vs Web) ---")
+    # Log de inicio del test
+    logger.info("\n" + "="*60)
+    logger.info("🚀 INICIO TEST: Validación de Datos del Catálogo (JSON vs Web)")
+    logger.info("="*60)
 
     # 1. Login (Precondición)
     logger.info("STEP 1: Iniciando sesión en la aplicación...")
@@ -49,5 +52,7 @@ def test_validar_precios_inventario(driver, username, password):
             f"Esperado: ${precio_esperado} | Encontrado: ${precio_real}"
         )
 
-        # <--- Log de éxito por cada producto
+        # Log de éxito por cada producto
         logger.info(f"   -> ✅ Producto validado: '{nombre}' | Precio: ${precio_real} (Correcto)")
+
+    logger.info("--- TEST FINALIZADO EXITOSAMENTE ---\n")

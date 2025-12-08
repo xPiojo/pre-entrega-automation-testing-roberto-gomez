@@ -1,7 +1,7 @@
 import pytest
 from pages.login_page import LoginPage
 from utils.data_login_loader import load_login_data
-from utils.logger import logger  # <--- Faltaba importar el logger
+from utils.logger import logger
 
 @pytest.mark.parametrize("username,password,debe_funcionar", load_login_data("data/data_login.csv"))
 def test_login(driver, username, password, debe_funcionar):
@@ -10,7 +10,9 @@ def test_login(driver, username, password, debe_funcionar):
     """
     
     # Log de inicio diferenciado por usuario
-    logger.info(f"--- INICIO TEST LOGIN: Usuario '{username}' ---")
+    logger.info("\n" + "="*60)
+    logger.info(f"🚀 INICIO TEST LOGIN: Usuario '{username}'")
+    logger.info("="*60)
 
     login_page = LoginPage(driver)
 
@@ -34,4 +36,4 @@ def test_login(driver, username, password, debe_funcionar):
         assert tiene_error, f"Error: El login con '{username}' debería fallar, pero NO mostró error."
         logger.info(f"✅ Bloqueo correcto confirmado para '{username}' (Mensaje de error visible).")
     
-    logger.info("--- FIN DE ITERACIÓN ---")
+    logger.info("--- FIN DE ITERACIÓN ---\n")
