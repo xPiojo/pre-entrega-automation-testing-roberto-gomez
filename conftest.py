@@ -13,7 +13,7 @@ def driver():
     """
     options = Options()
     options.add_argument("--incognito")
-    options.add_argument("--headless=new") # Descomentar para no ver el navegador
+    #options.add_argument("--headless=new") # Descomentar para no ver el navegador
 
     driver = webdriver.Chrome(options=options)
     
@@ -48,3 +48,11 @@ def pytest_runtest_makereport(item, call):
             # Usamos logger en lugar de print para consistencia
             logger.error(f"❌ Test Fallido: {item.name}")
             logger.info(f"📸 Captura de pantalla guardada en: {screenshot_path}")
+
+# --- FIXTURE API (JSONPLACEHOLDER) ---
+@pytest.fixture
+def api_url():
+    """
+    Devuelve la URL base para las pruebas de API.
+    """
+    return "https://jsonplaceholder.typicode.com"
