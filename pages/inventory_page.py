@@ -83,14 +83,24 @@ class InventoryPage:
 
     def add_first_product_to_cart(self):
         """
-        Hace clic en el botón 'Add to cart' del primer producto disponible.
+        Hace clic en el botón 'Add to cart' del primer producto disponible y devuelve el nombre del producto.
         """
         self.wait.until(EC.element_to_be_clickable(self._ADD_TO_CART_BUTTON))
         
+        nombres = self.driver.find_elements(*self._ITEM_NAME)
         botones = self.driver.find_elements(*self._ADD_TO_CART_BUTTON)
         
         if len(botones) > 0:
             botones[0].click()
-            logger.info("Click realizado en el primer producto.")
+            nombre_producto = nombres[0].text # Capturamos el nombre
+            logger.info(f"Click realizado en el primer producto: {nombre_producto}.")
+            return nombre_producto
         else:
             logger.error("Error: No se encontraron botones para agregar.")
+            return None
+    
+    def open_cart(self):
+        """Navega a la página del carrito."""
+        logger.info("Navegando hacia el carrito...")
+        # Esperamos a que el enlace sea clickeable
+        self.wait.until(EC.element_to_be_clickable(self._CART_LINK)).click()
