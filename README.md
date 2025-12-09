@@ -19,10 +19,6 @@ Este proyecto es el Trabajo Final Integrador para el curso de QA Automation. Con
 
 El proyecto sigue una arquitectura escalable y modular:
 
-## 📂 Estructura del Proyecto
-
-El proyecto sigue una arquitectura escalable y modular:
-
 ```text
 ├── data/                  # Datos de prueba (CSV, JSON)
 ├── logs/                  # Archivos de log generados (app.log)
