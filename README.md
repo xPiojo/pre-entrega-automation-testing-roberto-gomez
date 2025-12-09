@@ -19,16 +19,23 @@ Este proyecto es el Trabajo Final Integrador para el curso de QA Automation. Con
 
 El proyecto sigue una arquitectura escalable y modular:
 
+## 📂 Estructura del Proyecto
+
+El proyecto sigue una arquitectura escalable y modular:
+
 ```text
 ├── data/                  # Datos de prueba (CSV, JSON)
 ├── logs/                  # Archivos de log generados (app.log)
 ├── pages/                 # Page Objects (Mapeo de elementos web)
+│   ├── __init__.py        # Inicializador de paquete Python
 │   ├── cart_page.py
 │   ├── checkout_page.py
 │   ├── inventory_page.py
 │   └── login_page.py
 ├── reports/               # Reportes HTML y Capturas de pantalla
+│   └── screenshots/       # Subcarpeta para capturas de tests fallidos
 ├── tests/                 # Scripts de prueba (UI y API)
+│   ├── __init__.py        # Inicializador de paquete Python
 │   ├── test_api.py        # Pruebas de API (CRUD)
 │   ├── test_cart.py       # Flujos de carrito
 │   ├── test_checkout_complete.py # Flujo E2E completo
@@ -36,10 +43,13 @@ El proyecto sigue una arquitectura escalable y modular:
 │   ├── test_login.py      # Login parametrizado
 │   └── test_products_data.py # Validación de datos vs JSON
 ├── utils/                 # Utilidades (Logger, Lectores de datos)
+│   ├── __init__.py        # Inicializador de paquete Python
+│   ├── data_login_loader.py # Lector de datos de login CSV
+│   ├── lector_json.py     # Lector de datos de productos JSON
+│   └── logger.py          # Configuración del Logger personalizado
 ├── conftest.py            # Configuración de Fixtures (Driver, Hooks)
 ├── run_tests.py           # Script principal de ejecución
 └── requirements.txt       # Dependencias del proyecto
-```
 
 ## ⚙️ Instalación
 
