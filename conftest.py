@@ -3,7 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
 import datetime
-from utils.logger import logger  # <--- Usamos nuestro logger
+from utils.logger import logger
+# --- NUEVOS IMPORTS NECESARIOS PARA EL REPORTE HTML ---
+import pytest_html 
+# NOTA: Se eliminó 'from py.xml import html' para evitar el error.
 
 @pytest.fixture
 def driver():
@@ -26,10 +29,13 @@ def driver():
 def pytest_runtest_makereport(item, call):
     """
     Hook que escucha el resultado de cada test.
-    Si falla, toma una captura de pantalla.
+    Si falla, toma una captura de pantalla y la adjunta al reporte HTML.
     """
     outcome = yield
     report = outcome.get_result()
+    
+    # Inicializamos report.extra (necesario para agregar contenido al reporte HTML)
+    report.extra = getattr(report, "extra", [])
 
     if report.failed:
         # Intentamos obtener el driver del test que falló
@@ -48,6 +54,14 @@ def pytest_runtest_makereport(item, call):
             # Usamos logger en lugar de print para consistencia
             logger.error(f"❌ Test Fallido: {item.name}")
             logger.info(f"📸 Captura de pantalla guardada en: {screenshot_path}")
+
+            # --- CÓDIGO CORREGIDO: Adjuntar enlace navegable usando HTML puro ---
+            # Creamos un enlace HTML como string.
+            html_link_str = f'<a href="{screenshot_path}">Ver Captura de Pantalla</a>'
+            
+            # Inyectamos el enlace HTML en la metadata del test que falló
+            report.extra.append(pytest_html.extras.html(html_link_str))
+
 
 # --- FIXTURE API (JSONPLACEHOLDER) ---
 @pytest.fixture
