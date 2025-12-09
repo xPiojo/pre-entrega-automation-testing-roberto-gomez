@@ -50,6 +50,7 @@ El proyecto sigue una arquitectura escalable y modular:
 ├── conftest.py            # Configuración de Fixtures (Driver, Hooks)
 ├── run_tests.py           # Script principal de ejecución
 └── requirements.txt       # Dependencias del proyecto
+```
 
 ## ⚙️ Instalación
 
