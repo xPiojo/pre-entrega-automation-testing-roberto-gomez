@@ -8,22 +8,18 @@ def main():
     """
     print("🚀 Iniciando suite de pruebas automatizadas...")
     
-    # Argumentos para Pytest:
-    # -v: Verbose (detallado)
-    # -s: Mostrar logs en consola
-    # --html: Generar el reporte visual
+    # Argumentos para Pytest (El plugin pytest-html crea la carpeta 'reports/' automáticamente)
     args = [
         "-v", 
         "-s", 
-        "--html=report.html", 
+        "--html=reports/report.html", 
         "--self-contained-html"
     ]
     
-    # Ejecutar pytest (Automáticamente busca en la carpeta actual)
+    # Ejecutar pytest
     codigo_salida = pytest.main(args)
     
     # Retornar el código de salida al sistema (0 = Éxito, 1 = Fallo)
-    # Esto es útil cuando lo conectas a Jenkins o GitHub Actions
     sys.exit(codigo_salida)
 
 if __name__ == "__main__":
