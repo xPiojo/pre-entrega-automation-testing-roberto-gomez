@@ -1,5 +1,20 @@
-# Python cache
+# --- Python General ---
 __pycache__/
 *.pyc
+
+# --- Entornos Virtuales (Importante no subirlos) ---
+venv/
+env/
+.venv/
+
+# --- Pytest ---
+.pytest_cache/
+
+# --- Reportes y Logs del Proyecto ---
 logs/
 reports/
+report.html
+*.log
+
+# --- VS Code (Opcional, configuraciones locales) ---
+.vscode/

@@ -1,51 +1,73 @@
-# Pre-Entrega Automation Testing - Roberto Gomez
+# 🧪 Framework de Automatización de Pruebas (QA)
 
-## Propósito del proyecto
-Este proyecto automatiza pruebas de QA sobre la página [saucedemo.com](https://www.saucedemo.com/) para validar funcionalidades de login, catálogo de productos y carrito de compras.
+Este proyecto es el Trabajo Final Integrador para el curso de QA Automation. Consiste en un framework robusto construido con **Python**, **Selenium** y **Pytest** para automatizar pruebas de UI (Frontend) y API (Backend).
 
-## Tecnologías utilizadas
-- Python 3.x
-- Selenium
-- Pytest
-- Chrome WebDriver
-- pytest-html (para reportes en HTML)
+## 🚀 Tecnologías Utilizadas
 
-## Instalación de dependencias
-1. Crear un entorno virtual (opcional pero recomendado):
+* **Lenguaje:** Python 3.x
+* **Framework de Test:** Pytest
+* **Web Automation:** Selenium WebDriver
+* **API Automation:** Requests
+* **Reportes:** Pytest-HTML
+* **Patrón de Diseño:** Page Object Model (POM)
+* **Logging:** Sistema de logs personalizado
+* **Data Driven Testing:** CSV y JSON
+
+## 📂 Estructura del Proyecto
+
+El proyecto sigue una arquitectura escalable y modular:
+
+```text
+├── data/                  # Datos de prueba (CSV, JSON)
+├── logs/                  # Archivos de log generados (app.log)
+├── pages/                 # Page Objects (Mapeo de elementos web)
+│   ├── cart_page.py
+│   ├── checkout_page.py
+│   ├── inventory_page.py
+│   └── login_page.py
+├── reports/               # Reportes HTML y Capturas de pantalla
+├── tests/                 # Scripts de prueba (UI y API)
+│   ├── test_api.py        # Pruebas de API (CRUD)
+│   ├── test_cart.py       # Flujos de carrito
+│   ├── test_checkout_complete.py # Flujo E2E completo
+│   ├── test_inventory.py  # Pruebas de catálogo
+│   ├── test_login.py      # Login parametrizado
+│   └── test_products_data.py # Validación de datos vs JSON
+├── utils/                 # Utilidades (Logger, Lectores de datos)
+├── conftest.py            # Configuración de Fixtures (Driver, Hooks)
+└── requirements.txt       # Dependencias del proyecto
+```markdown
+
+## ⚙️ Instalación
+
+1.  **Clonar el repositorio:**
     ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
+    git clone [https://github.com/TU_USUARIO/proyecto-final-automation-testing.git](https://github.com/TU_USUARIO/proyecto-final-automation-testing.git)
+    cd proyecto-final-automation-testing
+    ```
 
-2. Instalar dependencias:
+2.  **Crear entorno virtual (Opcional pero recomendado):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # En Mac/Linux
+    venv\Scripts\activate     # En Windows
+    ```
 
+3.  **Instalar dependencias:**
     ```bash
     pip install -r requirements.txt
+    ```
 
-## Para correr todos los tests y generar un reporte HTML:
+## ▶️ Ejecución de Pruebas
 
+### 1. Ejecutar todos los tests (UI + API)
+Para correr la suite completa y ver los logs en vivo:
 ```bash
-pytest -v --html=reports/reporte.html
-```
+pytest -s
 
-Los tests se ejecutan de manera independiente.
 
-Se utilizan fixtures para manejar el navegador y capturas automáticas de fallos.
+### 2. Generar Reporte HTML
+Para generar el reporte visual con capturas de pantalla:
+```bash
+pytest --html=report.html --self-contained-html
 
-## Estructura del proyecto
-
-- tests/ → Contiene todos los tests automatizados.
-
-- reports/ → Reportes HTML y capturas de pantalla en caso de fallos.
-
-- conftest.py → Fixture de pytest y hooks para screenshots automáticos.
-
-- requirements.txt → Lista de dependencias necesarias para ejecutar el proyecto.
-
-- README.md → Documentación del proyecto, instrucciones de instalación y ejecución.
-
-## Evidencias adicionales
-
-Capturas de pantalla automáticas en caso de fallos.
-
-Reportes HTML generados automáticamente en reports/reporte.html.
