@@ -45,8 +45,8 @@ El proyecto sigue una arquitectura escalable y modular:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/TU_USUARIO/proyecto-final-automation-testing.git](https://github.com/TU_USUARIO/proyecto-final-automation-testing.git)
-    cd proyecto-final-automation-testing
+    git clone [https://github.com/xPiojo/pre-entrega-automation-testing-roberto-gomez.git](https://github.com/xPiojo/pre-entrega-automation-testing-roberto-gomez.git)
+    cd pre-entrega-automation-testing-roberto-gomez
     ```
 
 2.  **Crear entorno virtual (Opcional pero recomendado):**
