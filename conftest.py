@@ -4,9 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import os
 import datetime
 from utils.logger import logger
-# --- NUEVOS IMPORTS NECESARIOS PARA EL REPORTE HTML ---
 import pytest_html 
-# NOTA: Se eliminó 'from py.xml import html' para evitar el error.
 
 @pytest.fixture
 def driver():
@@ -51,11 +49,10 @@ def pytest_runtest_makereport(item, call):
 
             driver.save_screenshot(screenshot_path)
             
-            # Usamos logger en lugar de print para consistencia
             logger.error(f"❌ Test Fallido: {item.name}")
             logger.info(f"📸 Captura de pantalla guardada en: {screenshot_path}")
 
-            # --- CÓDIGO CORREGIDO: Adjuntar enlace navegable usando HTML puro ---
+            # --- Adjuntar enlace navegable usando HTML puro ---
             # Creamos un enlace HTML como string.
             html_link_str = f'<a href="{screenshot_path}">Ver Captura de Pantalla</a>'
             
