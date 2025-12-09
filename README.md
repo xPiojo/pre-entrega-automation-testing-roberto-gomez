@@ -13,6 +13,8 @@ Este proyecto es el Trabajo Final Integrador para el curso de QA Automation. Con
 * **Logging:** Sistema de logs personalizado
 * **Data Driven Testing:** CSV y JSON
 
+---
+
 ## 📂 Estructura del Proyecto
 
 El proyecto sigue una arquitectura escalable y modular:
@@ -35,8 +37,9 @@ El proyecto sigue una arquitectura escalable y modular:
 │   └── test_products_data.py # Validación de datos vs JSON
 ├── utils/                 # Utilidades (Logger, Lectores de datos)
 ├── conftest.py            # Configuración de Fixtures (Driver, Hooks)
+├── run_tests.py           # Script principal de ejecución
 └── requirements.txt       # Dependencias del proyecto
-```markdown
+```
 
 ## ⚙️ Instalación
 
@@ -58,16 +61,32 @@ El proyecto sigue una arquitectura escalable y modular:
     pip install -r requirements.txt
     ```
 
-## ▶️ Ejecución de Pruebas
 
-### 1. Ejecutar todos los tests (UI + API)
-Para correr la suite completa y ver los logs en vivo:
+## ▶️ Ejecución de Pruebas (Runner Principal)
+
+### 1. Ejecutar la Suite Completa (Método Recomendado)
+Usar el script `run_tests.py` es el método principal para ejecutar todos los tests, generar el reporte HTML y mostrar los logs en tiempo real.
+
 ```bash
-pytest -s
+python run_tests.py
+```
+(Este comando ejecuta todos los tests UI/API y genera automáticamente el archivo report.html)
 
-
-### 2. Generar Reporte HTML
-Para generar el reporte visual con capturas de pantalla:
+### 2. Ejecución Manual (Pytest)
+Para correr solo una parte específica o un comando diferente:
 ```bash
-pytest --html=report.html --self-contained-html
+pytest tests/test_login.py  # Solo tests de login
+```
 
+
+## 📊 Características del Framework
+
+1.  **Page Object Model:** La lógica de interacción con la web está separada de los tests, facilitando el mantenimiento.
+2.  **Capturas Automáticas:** Si un test falla, se guarda una captura de pantalla en la carpeta `reports/`.
+3.  **Enlace en Reporte:** El reporte HTML incluye un enlace directo a la captura de pantalla cuando un test falla.
+4.  **Logs Detallados:** Cada paso de la prueba se registra en consola y en `logs/app.log` para facilitar la depuración.
+5.  **Validación de Datos:** Se comparan los precios de la web contra un archivo maestro `productos.json`.
+
+---
+**Autor:** Roberto Gomez
+**Curso:** QA Automation Testing - Talento Tech
