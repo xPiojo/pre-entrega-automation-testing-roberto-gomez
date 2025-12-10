@@ -1,5 +1,6 @@
 import pytest
 import sys
+import os
 
 def main():
     """
@@ -7,8 +8,11 @@ def main():
     Detecta y ejecuta automáticamente todos los tests del proyecto.
     """
     print("🚀 Iniciando suite de pruebas automatizadas...")
+
+    # asegurar que existe la carpeta reports/ (pytest-html no siempre crea carpetas anidadas)
+    os.makedirs("reports", exist_ok=True)
     
-    # Argumentos para Pytest (El plugin pytest-html crea la carpeta 'reports/' automáticamente)
+    # Argumentos para Pytest
     args = [
         "-v", 
         "-s", 

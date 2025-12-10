@@ -17,7 +17,10 @@ def driver():
     """
     options = Options()
     options.add_argument("--incognito")
-    #options.add_argument("--headless=new") # Descomentar para no ver el navegador
+    options.add_argument("--headless=new") # Comentar para ver el navegador
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
 
     driver = webdriver.Chrome(options=options)
     
@@ -38,7 +41,8 @@ def pytest_runtest_makereport(item, call):
     # Inicializamos report.extra (necesario para agregar contenido al reporte HTML)
     report.extra = getattr(report, "extra", [])
 
-    if report.failed:
+    # ✅ Corregido: solo tomar screenshot si el test falló en la fase "call"
+    if report.failed and report.when == "call":
         # Intentamos obtener el driver del test que falló
         driver = item.funcargs.get("driver")
         if driver:
@@ -50,11 +54,14 @@ def pytest_runtest_makereport(item, call):
             # Limpiamos el nombre del test para evitar caracteres raros
             test_name = item.name.replace("[", "_").replace("]", "_")
             
-            # La ruta donde se guarda el archivo (Ruta absoluta desde la raíz del proyecto)
-            screenshot_path_save = f"{SCREENSHOTS_DIR}/{test_name}_{timestamp}.png"
+            # ✅ Corregido: crear filename para evitar errores de path
+            filename = f"{test_name}_{timestamp}.png"
+            
+            # La ruta donde se guarda el archivo (Ruta desde la raíz del proyecto)
+            screenshot_path_save = os.path.join(SCREENSHOTS_DIR, filename)
             
             # La ruta que verá el reporte HTML (Ruta RELATIVA desde reports/report.html)
-            screenshot_path_link = f"screenshots/{test_name}_{timestamp}.png"
+            screenshot_path_link = f"screenshots/{filename}"
 
             driver.save_screenshot(screenshot_path_save)
             
