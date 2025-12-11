@@ -9,42 +9,56 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     env:
       PYTHON_VERSION: '3.9'
       PIP_CACHE: ~/.cache/pip
 
     steps:
 
-      # 1. Checkout
+      # 1) Descargar el repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Cache pip
+      # 2) Cache pip dependencies
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
           path: ${{ env.PIP_CACHE }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
-      # 3. Set up Python
+      # 3) Instalar Google Chrome
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # 4) Configurar Python
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # 4. Install deps
+      # 5) Instalar dependencias
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 5. Run tests
+      # 6) Ejecutar test suite
       - name: Run tests
         run: python3 run_tests.py
 
-      # 6. Upload reports
+      # 7) Subir reportes HTML (incluye screenshots)
       - name: Upload HTML reports
         uses: actions/upload-artifact@v4
         with:
           name: html-reports
           path: reports/
+
+      # 8) Subir logs de la suite
+      - name: Upload suite logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: suite-logs
+          path: logs/
